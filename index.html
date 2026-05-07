@@ -1,0 +1,238 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>律师任务管理系统</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="toast" class="toast"></div>
+  <main class="app-shell">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Lawyer Workbench</p>
+        <h1>小周律师任务管理系统</h1>
+        <p>案件先入库，任务再关联案件；法定期限独立管理。</p>
+      </div>
+      <div class="today-card">
+        <span>今日日期</span>
+        <strong id="todayText"></strong>
+        <small>本地保存，刷新不丢失</small>
+      </div>
+    </section>
+
+    <nav class="top-tabs">
+      <button class="active" data-page="tasksPage">任务看板</button>
+      <button data-page="casesPage">案件库</button>
+      <button data-page="calendarPage">日历</button>
+      <div class="global-search">
+        <input id="globalSearch" placeholder="输入案号、客户名、关键词" autocomplete="off" />
+        <div id="searchResults" class="search-results"></div>
+      </div>
+    </nav>
+
+    <section class="stats-grid">
+      <article><span>今日待办</span><strong id="todayCount">0</strong></article>
+      <article><span>临期/逾期</span><strong id="riskCount">0</strong></article>
+      <article><span>等待反馈</span><strong id="waitingCount">0</strong></article>
+      <article><span>今日耗时</span><strong id="timeCount">0.0h</strong></article>
+    </section>
+
+    <section id="tasksPage" class="page active">
+      <section class="layout">
+        <aside class="panel">
+          <div class="panel-header">
+            <h2>新增任务</h2>
+            <button id="openLeaderExtract" type="button">📝 从领导消息提炼</button>
+          </div>
+          <form id="taskForm">
+            <label>关联案件<select id="taskCaseId" required></select></label>
+            <div class="linked-case-box" id="linkedCaseInfo">请先在案件库新增案件。</div>
+            <label>任务名称<input id="taskTitle" required placeholder="例如：整理口审PPT第3-5页" /></label>
+            <label>优先级
+              <select id="taskPriority">
+                <option value="P0">P0 今天不做会出事故</option>
+                <option value="P1">P1 对方正在等</option>
+                <option value="P2">P2 本周推进</option>
+                <option value="P3">P3 有空再做</option>
+              </select>
+            </label>
+            <label>内部截止日<input id="taskDue" type="date" /></label>
+            <label>下一步动作<textarea id="taskNext" placeholder="下一步具体做什么？"></textarea></label>
+            <button type="submit">添加任务</button>
+          </form>
+        </aside>
+
+        <section class="panel main-panel">
+          <div class="panel-header">
+            <h2>任务看板</h2>
+            <div class="filters">
+              <button data-filter="all">全部</button>
+              <button data-filter="today" class="active">今日</button>
+              <button data-filter="risk">临期</button>
+              <button data-filter="waiting">等待</button>
+              <button data-filter="invention">发明</button>
+              <button data-filter="utility">实用新型</button>
+              <button data-filter="design">外观</button>
+              <button data-filter="invalidity">无效</button>
+              <button data-filter="litigation">诉讼</button>
+            </div>
+          </div>
+          <div class="board" id="board"></div>
+        </section>
+      </section>
+
+      <section class="layout bottom-layout">
+        <section class="panel">
+          <h2>案件概览</h2>
+          <div id="caseList" class="case-list"></div>
+        </section>
+        <section class="panel">
+          <h2>今日复盘</h2>
+          <textarea id="dailyNote" placeholder="今天实际完成了什么？遇到什么卡点？明天第一优先级是什么？"></textarea>
+          <div class="summary-box" id="dailySummary"></div>
+        </section>
+      </section>
+    </section>
+
+    <section id="casesPage" class="page">
+      <section class="layout">
+        <aside class="panel">
+          <div class="panel-header">
+            <h2>新增/编辑案件</h2>
+            <button id="openAiExtractFromForm" type="button">自动填入</button>
+          </div>
+          <form id="caseForm">
+            <input id="editingCaseId" type="hidden" />
+            <label>所内案号<input id="firmCaseNo" required placeholder="例如：2601588CNP8" /></label>
+            <label>官方案号<input id="caseNo" placeholder="例如：6W135088" /></label>
+            <label>关联程序/主案号<input id="relatedCaseNos" placeholder="例如：一审案号、二审案号、无效案号，用逗号分隔" /></label>
+            <label>专利号<input id="patentNumber" placeholder="强烈建议填写，例如 ZL202010000000.0" /></label>
+            <label>程序阶段
+              <select id="procedureStage">
+                <option value="无效">无效</option>
+                <option value="无效行政诉讼一审">无效行政诉讼一审</option>
+                <option value="无效行政诉讼二审">无效行政诉讼二审</option>
+                <option value="民事侵权一审">民事侵权一审</option>
+                <option value="民事侵权二审">民事侵权二审</option>
+                <option value="其他">其他</option>
+              </select>
+            </label>
+            <label>关联案件<select id="relatedCaseIds" multiple size="4"></select></label>
+            <label>客户/当事人<input id="caseClient" required placeholder="例如：某某有限公司" /></label>
+            <label>案件类型
+              <select id="caseTypeInput" required>
+                <option value="发明专利">发明专利</option>
+                <option value="实用新型">实用新型</option>
+                <option value="外观设计">外观设计</option>
+                <option value="无效宣告">无效宣告</option>
+                <option value="侵权诉讼">侵权诉讼</option>
+                <option value="商标">商标</option>
+                <option value="其他">其他</option>
+              </select>
+            </label>
+            <label>案件名称<input id="caseNameInput" placeholder="例如：污水净化器（S型MBBR）无效案" /></label>
+            <label>文档路径<input id="caseDocumentPath" placeholder="粘贴坚果云本地同步路径，例如 D:\坚果云\案件\2025-001" /></label>
+            <label>法定期限<textarea id="caseDeadlines" placeholder="每行一个，例如：一通答复期限 2025-06-15"></textarea></label>
+            <label>备注<textarea id="caseNote" placeholder="案件阶段、特殊风险、客户偏好等"></textarea></label>
+            <button type="submit">保存案件</button>
+          </form>
+        </aside>
+        <section class="panel main-panel">
+          <div class="panel-header">
+            <h2>案件列表</h2>
+            <div class="case-actions">
+              <button id="batchOfficialFiles" type="button">📁 批量官文</button>
+              <button id="openAiExtract" type="button">📄 AI识文</button>
+              <input id="batchFileInput" type="file" multiple hidden />
+            </div>
+          </div>
+          <div id="caseLibrary" class="case-library"></div>
+        </section>
+      </section>
+    </section>
+
+    <section id="calendarPage" class="page">
+      <section class="panel calendar-view-panel">
+        <div class="panel-header">
+          <div>
+            <h2>日历视图</h2>
+            <p class="muted">红色为法定期限，橙色为内部截止日。点击日期查看当日任务。</p>
+          </div>
+          <div class="calendar-controls">
+            <button id="prevCalendarMonth" type="button">上月</button>
+            <strong id="calendarMonthTitle"></strong>
+            <button id="nextCalendarMonth" type="button">下月</button>
+          </div>
+        </div>
+        <div class="calendar-view-layout">
+          <div id="deadlineCalendar" class="deadline-calendar large-calendar"></div>
+          <aside id="calendarDayPanel" class="calendar-day-panel">
+            <h3>当日任务</h3>
+            <p class="muted">点击左侧某一天查看详情。</p>
+          </aside>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <aside id="caseDrawer" class="case-drawer">
+    <div class="drawer-header">
+      <div>
+        <h2 id="drawerTitle">案件档案</h2>
+        <p id="drawerSubtitle"></p>
+      </div>
+      <button id="closeDrawerBtn">关闭</button>
+    </div>
+    <div id="drawerContent" class="drawer-content"></div>
+  </aside>
+  <div id="drawerMask" class="drawer-mask"></div>
+
+  <div id="aiModalMask" class="modal-mask"></div>
+  <div id="leaderModalMask" class="modal-mask"></div>
+  <section id="leaderModal" class="leader-modal">
+    <div class="modal-header">
+      <h2>从领导消息提炼任务</h2>
+      <button id="closeLeaderModal" type="button">关闭</button>
+    </div>
+    <label>领导消息
+      <textarea id="leaderMessageText" placeholder="把领导的原话、微信消息、或语音转文字贴到这里"></textarea>
+    </label>
+    <div class="modal-actions">
+      <button id="runLeaderExtract" type="button">提炼</button>
+      <span id="leaderExtractStatus"></span>
+    </div>
+    <div id="leaderExtractResult" class="leader-extract-result"></div>
+  </section>
+  <section id="aiModal" class="ai-modal">
+    <div class="modal-header">
+      <h2>从官方文件自动提取信息</h2>
+      <button id="closeAiModal" type="button">关闭</button>
+    </div>
+    <div class="ai-upload" id="aiDropZone">
+      <input id="aiFileInput" type="file" accept=".pdf,image/png,image/jpeg" />
+      <strong>上传法院传票、审查意见、受理通知书等</strong>
+      <span>支持拖拽 JPG/PNG/PDF；图片 ≤5MB，PDF ≤10MB</span>
+    </div>
+    <div id="apiKeyBox" class="api-key-box">
+      <label>DeepSeek API Key<input id="deepseekKey" type="password" placeholder="sk-..." /></label>
+      <a href="https://platform.deepseek.com" target="_blank" rel="noreferrer">获取 Key</a>
+      <button id="saveDeepseekKey" type="button">保存 Key</button>
+    </div>
+    <label>手动备用区<textarea id="manualOcrText" placeholder="如果PDF提取文字失败，请复制文件文字粘贴到这里"></textarea></label>
+    <div class="modal-actions">
+      <select id="deepseekModel">
+        <option value="deepseek-chat">deepseek-chat</option>
+        <option value="deepseek-reasoner">deepseek-reasoner</option>
+      </select>
+      <button id="runAiExtract" type="button">开始识别</button>
+      <span id="aiStatus"></span>
+    </div>
+    <div id="aiResult" class="ai-result"></div>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
