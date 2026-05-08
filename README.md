@@ -1,6 +1,4 @@
-# README 草稿
 
-你可以在 GitHub 仓库里新建一个 `README.md`，放下面这段。
 
 ```markdown
 # 小周工作台
