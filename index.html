@@ -12,61 +12,61 @@
     <section class="hero">
       <div>
         <p class="eyebrow">Lawyer Workbench</p>
-        <h1>小周律师任务管理系统</h1>
-        <p>案件先入库，任务再关联案件；法定期限独立管理。</p>
+        <h1>小周工作台</h1>
+        <p>先放进来。我来分。</p>
       </div>
       <div class="today-card">
-        <span>今日日期</span>
+        <span>今天</span>
         <strong id="todayText"></strong>
-        <small>本地保存，刷新不丢失</small>
+        <small>本地存着。</small>
       </div>
     </section>
 
     <nav class="top-tabs">
-      <button class="active" data-page="tasksPage">任务看板</button>
-      <button data-page="casesPage">案件库</button>
+      <button class="active" data-page="tasksPage">任务</button>
+      <button data-page="casesPage">案子</button>
       <button data-page="calendarPage">日历</button>
       <div class="global-search">
-        <input id="globalSearch" placeholder="输入案号、客户名、关键词" autocomplete="off" />
+        <input id="globalSearch" placeholder="找案号、客户、词" autocomplete="off" />
         <div id="searchResults" class="search-results"></div>
       </div>
     </nav>
 
     <section class="stats-grid">
-      <article><span>今日待办</span><strong id="todayCount">0</strong></article>
-      <article><span>临期/逾期</span><strong id="riskCount">0</strong></article>
-      <article><span>等待反馈</span><strong id="waitingCount">0</strong></article>
-      <article><span>今日耗时</span><strong id="timeCount">0.0h</strong></article>
+      <article><span>今天要做</span><strong id="todayCount">0</strong></article>
+      <article><span>快到期</span><strong id="riskCount">0</strong></article>
+      <article><span>等回复</span><strong id="waitingCount">0</strong></article>
+      <article><span>今天用时</span><strong id="timeCount">0.0h</strong></article>
     </section>
 
     <section id="tasksPage" class="page active">
       <section class="layout">
         <aside class="panel">
           <div class="panel-header">
-            <h2>新增任务</h2>
-            <button id="openLeaderExtract" type="button">📝 从领导消息提炼</button>
+            <h2>加任务</h2>
+            <button id="openUnifiedInbox" type="button">收件箱</button>
           </div>
           <form id="taskForm">
-            <label>关联案件<select id="taskCaseId" required></select></label>
-            <div class="linked-case-box" id="linkedCaseInfo">请先在案件库新增案件。</div>
-            <label>任务名称<input id="taskTitle" required placeholder="例如：整理口审PPT第3-5页" /></label>
+            <label>关联案子<select id="taskCaseId" required></select></label>
+            <div class="linked-case-box" id="linkedCaseInfo">先加案子？</div>
+            <label>任务名<input id="taskTitle" required placeholder="例：整理PPT" /></label>
             <label>优先级
               <select id="taskPriority">
-                <option value="P0">P0 今天不做会出事故</option>
-                <option value="P1">P1 对方正在等</option>
+                <option value="P0">P0 今天必须做</option>
+                <option value="P1">P1 别人等着</option>
                 <option value="P2">P2 本周推进</option>
                 <option value="P3">P3 有空再做</option>
               </select>
             </label>
-            <label>内部截止日<input id="taskDue" type="date" /></label>
-            <label>下一步动作<textarea id="taskNext" placeholder="下一步具体做什么？"></textarea></label>
-            <button type="submit">添加任务</button>
+            <label>截止日<input id="taskDue" type="date" /></label>
+            <label>下一步<textarea id="taskNext" placeholder="下一步做什么？"></textarea></label>
+            <button type="submit">加任务</button>
           </form>
         </aside>
 
         <section class="panel main-panel">
           <div class="panel-header">
-            <h2>任务看板</h2>
+            <h2>任务</h2>
             <div class="filters">
               <button data-filter="all">全部</button>
               <button data-filter="today" class="active">今日</button>
@@ -85,12 +85,12 @@
 
       <section class="layout bottom-layout">
         <section class="panel">
-          <h2>案件概览</h2>
+          <h2>案子概览</h2>
           <div id="caseList" class="case-list"></div>
         </section>
         <section class="panel">
-          <h2>今日复盘</h2>
-          <textarea id="dailyNote" placeholder="今天实际完成了什么？遇到什么卡点？明天第一优先级是什么？"></textarea>
+          <h2>今天复盘</h2>
+          <textarea id="dailyNote" placeholder="做了什么？卡在哪？明天先做啥？"></textarea>
           <div class="summary-box" id="dailySummary"></div>
         </section>
       </section>
@@ -100,8 +100,8 @@
       <section class="layout">
         <aside class="panel">
           <div class="panel-header">
-            <h2>新增/编辑案件</h2>
-            <button id="openAiExtractFromForm" type="button">自动填入</button>
+            <h2>加案子</h2>
+            <button id="openUnifiedInboxFromCase" type="button">收件箱</button>
           </div>
           <form id="caseForm">
             <input id="editingCaseId" type="hidden" />
@@ -109,7 +109,7 @@
             <label>官方案号<input id="caseNo" placeholder="例如：6W135088" /></label>
             <label>关联程序/主案号<input id="relatedCaseNos" placeholder="例如：一审案号、二审案号、无效案号，用逗号分隔" /></label>
             <label>专利号<input id="patentNumber" placeholder="强烈建议填写，例如 ZL202010000000.0" /></label>
-            <label>程序阶段
+            <label>阶段
               <select id="procedureStage">
                 <option value="无效">无效</option>
                 <option value="无效行政诉讼一审">无效行政诉讼一审</option>
@@ -119,9 +119,9 @@
                 <option value="其他">其他</option>
               </select>
             </label>
-            <label>关联案件<select id="relatedCaseIds" multiple size="4"></select></label>
-            <label>客户/当事人<input id="caseClient" required placeholder="例如：某某有限公司" /></label>
-            <label>案件类型
+            <label>关联案子<select id="relatedCaseIds" multiple size="4"></select></label>
+            <label>客户<input id="caseClient" required placeholder="例：某某公司" /></label>
+            <label>类型
               <select id="caseTypeInput" required>
                 <option value="发明专利">发明专利</option>
                 <option value="实用新型">实用新型</option>
@@ -132,19 +132,18 @@
                 <option value="其他">其他</option>
               </select>
             </label>
-            <label>案件名称<input id="caseNameInput" placeholder="例如：污水净化器（S型MBBR）无效案" /></label>
-            <label>文档路径<input id="caseDocumentPath" placeholder="粘贴坚果云本地同步路径，例如 D:\坚果云\案件\2025-001" /></label>
-            <label>法定期限<textarea id="caseDeadlines" placeholder="每行一个，例如：一通答复期限 2025-06-15"></textarea></label>
-            <label>备注<textarea id="caseNote" placeholder="案件阶段、特殊风险、客户偏好等"></textarea></label>
-            <button type="submit">保存案件</button>
+            <label>案名<input id="caseNameInput" placeholder="例：无效案" /></label>
+            <label>文件路径<input id="caseDocumentPath" placeholder="坚果云路径。" /></label>
+            <label>法定期限<textarea id="caseDeadlines" placeholder="一行一个。"></textarea></label>
+            <label>备注<textarea id="caseNote" placeholder="风险、偏好。"></textarea></label>
+            <button type="submit">存案子</button>
           </form>
         </aside>
         <section class="panel main-panel">
           <div class="panel-header">
-            <h2>案件列表</h2>
+            <h2>案子列表</h2>
             <div class="case-actions">
-              <button id="batchOfficialFiles" type="button">📁 批量官文</button>
-              <button id="openAiExtract" type="button">📄 AI识文</button>
+              <button id="batchOfficialFiles" type="button">批量建档</button>
               <input id="batchFileInput" type="file" multiple hidden />
             </div>
           </div>
@@ -158,7 +157,7 @@
         <div class="panel-header">
           <div>
             <h2>日历视图</h2>
-            <p class="muted">红色为法定期限，橙色为内部截止日。点击日期查看当日任务。</p>
+            <p class="muted">红色法期。橙色内期。</p>
           </div>
           <div class="calendar-controls">
             <button id="prevCalendarMonth" type="button">上月</button>
@@ -169,8 +168,8 @@
         <div class="calendar-view-layout">
           <div id="deadlineCalendar" class="deadline-calendar large-calendar"></div>
           <aside id="calendarDayPanel" class="calendar-day-panel">
-            <h3>当日任务</h3>
-            <p class="muted">点击左侧某一天查看详情。</p>
+            <h3>当天任务</h3>
+            <p class="muted">点日期，看任务。</p>
           </aside>
         </div>
       </section>
@@ -180,10 +179,10 @@
   <aside id="caseDrawer" class="case-drawer">
     <div class="drawer-header">
       <div>
-        <h2 id="drawerTitle">案件档案</h2>
+        <h2 id="drawerTitle">案子档案</h2>
         <p id="drawerSubtitle"></p>
       </div>
-      <button id="closeDrawerBtn">关闭</button>
+      <button id="closeDrawerBtn">关掉</button>
     </div>
     <div id="drawerContent" class="drawer-content"></div>
   </aside>
@@ -191,42 +190,80 @@
 
   <div id="aiModalMask" class="modal-mask"></div>
   <div id="leaderModalMask" class="modal-mask"></div>
-  <section id="leaderModal" class="leader-modal">
+  <div id="fileTaskModalMask" class="modal-mask"></div>
+  <div id="unifiedInboxMask" class="modal-mask"></div>
+  <section id="unifiedInboxModal" class="leader-modal">
     <div class="modal-header">
-      <h2>从领导消息提炼任务</h2>
-      <button id="closeLeaderModal" type="button">关闭</button>
+      <h2>收件箱</h2>
+      <button id="closeUnifiedInbox" type="button">关掉</button>
     </div>
-    <label>领导消息
-      <textarea id="leaderMessageText" placeholder="把领导的原话、微信消息、或语音转文字贴到这里"></textarea>
+    <div class="ai-upload">
+      <input id="unifiedInboxFile" type="file" accept=".pdf,image/png,image/jpeg" />
+      <p>文件或消息。放这里。</p>
+    </div>
+    <label>文字内容
+      <textarea id="unifiedInboxText" placeholder="粘贴消息、需求、官文。"></textarea>
     </label>
     <div class="modal-actions">
-      <button id="runLeaderExtract" type="button">提炼</button>
+      <button id="runUnifiedInbox" type="button">开始看</button>
+      <span id="unifiedInboxStatus"></span>
+    </div>
+    <div id="unifiedInboxResult" class="leader-extract-result"></div>
+  </section>
+  <section id="leaderModal" class="leader-modal">
+    <div class="modal-header">
+      <h2>领导消息</h2>
+      <button id="closeLeaderModal" type="button">关掉</button>
+    </div>
+    <label>领导消息
+      <textarea id="leaderMessageText" placeholder="原话贴这里。"></textarea>
+    </label>
+    <div class="modal-actions">
+      <button id="runLeaderExtract" type="button">提取</button>
       <span id="leaderExtractStatus"></span>
     </div>
     <div id="leaderExtractResult" class="leader-extract-result"></div>
   </section>
+  <section id="fileTaskModal" class="leader-modal">
+    <div class="modal-header">
+      <h2>文件任务</h2>
+      <button id="closeFileTaskModal" type="button">关掉</button>
+    </div>
+    <div class="ai-upload">
+      <input id="fileTaskInput" type="file" accept=".pdf,image/png,image/jpeg" />
+      <p>文件放这。文字也行。</p>
+    </div>
+    <label>备用文字
+      <textarea id="fileTaskText" placeholder="看不清，就贴文字。"></textarea>
+    </label>
+    <div class="modal-actions">
+      <button id="runFileTaskExtract" type="button">提取任务</button>
+      <span id="fileTaskStatus"></span>
+    </div>
+    <div id="fileTaskResult" class="leader-extract-result"></div>
+  </section>
   <section id="aiModal" class="ai-modal">
     <div class="modal-header">
-      <h2>从官方文件自动提取信息</h2>
-      <button id="closeAiModal" type="button">关闭</button>
+      <h2>看文件</h2>
+      <button id="closeAiModal" type="button">关掉</button>
     </div>
     <div class="ai-upload" id="aiDropZone">
       <input id="aiFileInput" type="file" accept=".pdf,image/png,image/jpeg" />
-      <strong>上传法院传票、审查意见、受理通知书等</strong>
-      <span>支持拖拽 JPG/PNG/PDF；图片 ≤5MB，PDF ≤10MB</span>
+      <strong>上传官文。</strong>
+      <span>JPG/PNG/PDF。别太大。</span>
     </div>
     <div id="apiKeyBox" class="api-key-box">
       <label>DeepSeek API Key<input id="deepseekKey" type="password" placeholder="sk-..." /></label>
       <a href="https://platform.deepseek.com" target="_blank" rel="noreferrer">获取 Key</a>
-      <button id="saveDeepseekKey" type="button">保存 Key</button>
+      <button id="saveDeepseekKey" type="button">存Key</button>
     </div>
-    <label>手动备用区<textarea id="manualOcrText" placeholder="如果PDF提取文字失败，请复制文件文字粘贴到这里"></textarea></label>
+    <label>备用文字<textarea id="manualOcrText" placeholder="看不清，就贴文字。"></textarea></label>
     <div class="modal-actions">
       <select id="deepseekModel">
         <option value="deepseek-chat">deepseek-chat</option>
         <option value="deepseek-reasoner">deepseek-reasoner</option>
       </select>
-      <button id="runAiExtract" type="button">开始识别</button>
+      <button id="runAiExtract" type="button">开始看</button>
       <span id="aiStatus"></span>
     </div>
     <div id="aiResult" class="ai-result"></div>

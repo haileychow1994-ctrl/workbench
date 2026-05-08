@@ -83,3 +83,21 @@ select[multiple]{min-height:96px}
 #leaderModal.leader-modal{z-index:90;pointer-events:auto}
 #leaderModal.leader-modal.show{display:block}
 #leaderModal textarea,#leaderModal input,#leaderModal select,#leaderModal button{pointer-events:auto}
+#exportDataBtn,#importDataBtn{border-color:#d8e3f0;background:#f6f9fd;color:#23476f}
+#exportDataBtn:hover,#importDataBtn:hover{background:#edf5ff;border-color:#bcd4ee}
+.worklog-actions{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.worklog-wrap{overflow:auto;border:1px solid #222;background:#fff;margin-top:8px}
+.worklog-table{width:100%;border-collapse:collapse;min-width:760px;font-size:13px;color:#111}
+.worklog-table th,.worklog-table td{border:1px solid #222;padding:7px 8px;text-align:center;vertical-align:middle}
+.worklog-table th{background:#fff200;font-weight:800}
+.worklog-table td:nth-child(5){text-align:left;min-width:220px}
+#fileTaskModalMask.modal-mask.show{z-index:80;display:block}
+#fileTaskModal.leader-modal{z-index:90;pointer-events:auto}
+#fileTaskModal.leader-modal.show{display:block}
+#fileTaskModal textarea,#fileTaskModal input,#fileTaskModal select,#fileTaskModal button{pointer-events:auto}
+#unifiedInboxMask.modal-mask.show{z-index:100;display:block}
+#unifiedInboxModal.leader-modal{z-index:110;pointer-events:auto;width:min(760px,calc(100vw - 28px))}
+#unifiedInboxModal.leader-modal.show{display:block}
+#unifiedInboxModal textarea,#unifiedInboxModal input,#unifiedInboxModal select,#unifiedInboxModal button{pointer-events:auto}
+.unified-decision{border-left:5px solid #1f2937;background:#fff}
+.unified-decision h3{margin-top:0}
